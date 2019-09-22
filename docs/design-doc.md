@@ -1,21 +1,21 @@
-Todoist Plugable Command Line Interface (ToPCLI)
+# Todoist Plugable Command Line Interface (ToPCLI)
 
-# Introduction
+## Introduction
 
-## Todoist
+### Todoist
 [Todoist](https://todoist.com/) is a task manager and orgnazier created by
 Doist. It provides an abundance of features to help manage and organize tasks
 such as projects, labels, priority levels, and so on. I use it extensively for
 every day tassk from anywhere to chores to work.
 
-## The API
+### The API
 
 The Doist team has graciously provided a [Python API](doist/todoist-python) to
 that provides a Python programable way to interact with their [REST
 API](https://developer.todoist.com/sync/v8/#summary-of-contents). This will be
 the main library used by this project.
 
-## Reason and Goal
+### Reason and Goal
 
 The current biggest todoist CLI tool available right now is
 [sachaos/todoist](sachaos/todoist). The app provides implemtation for all basic
@@ -28,9 +28,9 @@ that is fully plugable. That is, the application will be built with the idea
 that anyone can extend its functionality to do whatever they want easily by
 providing compatible plugin modules.
 
-# Overview
+## Overview
 
-## Plug-in Architecture
+### Plug-in Architecture
 
 The application will attempt to follow a plugin-oriented architecture. That is,
 there will be a single core system whose purpose is to expose the current
@@ -47,7 +47,7 @@ commands that actually perform any tasks will be added through plugins. This
 means that in an ideal situation, the user will not have to interact with the
 core system at all.
 
-## Plugin Structure
+### Plugin Structure
 
 There will be two ways to extend ToPCLI: adding a plugin base with plugins or
 adding plugins to an existing plugin base.
@@ -82,4 +82,4 @@ functionality:
 This design will hopefully keep the application extensible while also being
 defined enough right out of the box.
 
-# Implementation
+## Implementation
