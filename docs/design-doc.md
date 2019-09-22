@@ -11,8 +11,8 @@ every day tassk from anywhere to chores to work.
 ### The API
 
 The Doist team has graciously provided a [Python
-API](https://github.com/doist/todoist-python) to that provides a Python
-programable way to interact with their [REST
+API](https://github.com/doist/todoist-python) that provides a Python programable
+way to interact with their [REST
 API](https://developer.todoist.com/sync/v8/#summary-of-contents). This will be
 the main library used by this project.
 
@@ -123,6 +123,10 @@ The plugin base will have the following responsibilities:
 - List all valid Python modules under it as valid plugins and arguments for the
   sub-level arguemnt parser.
 - Provide correct argument handlers to all of the plugins listed under it.
+
+Allowing both file plugins and module plugins allows simple plugins to remain
+tightly in one single file, while more complicated plugins to reside in a module
+where they can be split up into smaller, more manageable files.
 
 ### Plugins
 
