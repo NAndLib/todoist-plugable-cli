@@ -85,10 +85,57 @@ defined enough right out of the box.
 
 ## Implementation
 
+Every ToPCLI command will have the following form:
+```
+todoist <plugin-base> <command>
+```
+Where `<plugin-base>` is the name of any available plugin bases and `<command>`
+will be the name of the plugin that the user wants to run. See [plugin
+base](plugin-base) and [plugins](plugins) for more detailed explanations of how
+this will work.
+
 ### Core system
+
+The core system will be split into two parts: the Todoist API extension and the
+plugin loader.
+
+#### Todoist API Extension
+
+#### Plugin Loader
+
+The plugin loader will run everytime any `todoist` command is issued. The loader
+will then do a search through the the application's `plugins` directory to load
+the specific plugin base and, subsequently, the plugin that matches the command
+given.
+
+The loader will look for an `__init__.py` file within the plugin base that it is
+loading.
 
 ### Plugin Bases
 
+Any python module under the application's `plugin` directory with a valid
+`__init__.py` file will be recognized as a plugin base by ToPCLI.
+
+The plugin base will have the following responsibilities:
+- List itself as a valid argument for the top level argument parser.
+- List all valid Python files under it as valid plugins and as arguments for the
+  sub-level argument parser.
+- List all valid Python modules under it as valid plugins and arguments for the
+  sub-level arguemnt parser.
+- Provide correct argument handlers to all of the plugins listed under it.
+
 ### Plugins
+
+A plugin can be a Python file or a Python module under a plugin base directory.
+The filename or module name will be command that is enabled for that specific
+plugin base.
+
+For example, the plugin file `tasks/edit.py` would enable the command: `todoist
+tasks edit ...` and the plugin module `tasks/label` would enable the command:
+`todoist tasks label ...`.
+
+For the plugin base to correctly provide handlers for any plugin listed, a
+plugin must have a `run(args)` function defined, where `args` is a list of of
+arguments that it will get from the plugin base.
 
 ## Testing
