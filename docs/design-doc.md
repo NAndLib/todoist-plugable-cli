@@ -84,3 +84,13 @@ This design will hopefully keep the application extensible while also being
 defined enough right out of the box.
 
 ## Implementation
+
+### Project Structure
+
+### Core system
+
+### Plugin Bases
+
+### Plugins
+
+## Testing
