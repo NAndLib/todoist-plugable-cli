@@ -11,10 +11,11 @@ every day tassk from anywhere to chores to work.
 ### The API
 
 The Doist team has graciously provided a [Python
-API](https://github.com/doist/todoist-python) to that provides a Python
+API](https://github.com/doist/todoist-python) that provides a Python
 programable way to interact with their [REST
 API](https://developer.todoist.com/sync/v8/#summary-of-contents). This will be
 the main library used by this project.
+
 
 ### Reason and Goal
 
@@ -124,6 +125,8 @@ The plugin base will have the following responsibilities:
   sub-level arguemnt parser.
 - Provide correct argument handlers to all of the plugins listed under it.
 
+[Harsh] - Why allow both modules and files as plugins ? In other words, would you benefit from standardisation of some sort ?
+
 ### Plugins
 
 A plugin can be a Python file or a Python module under a plugin base directory.
@@ -134,8 +137,12 @@ For example, the plugin file `tasks/edit.py` would enable the command: `todoist
 tasks edit ...` and the plugin module `tasks/label` would enable the command:
 `todoist tasks label ...`.
 
+[Harsh] - How straightforward is it to call other plugins inside a plugin ?
+
 For the plugin base to correctly provide handlers for any plugin listed, a
 plugin must have a `run(args)` function defined, where `args` is a list of of
 arguments that it will get from the plugin base.
+
+[Harsh] - Would it be useful to make plugin-base (which essentially are 'collections') inside a plugin-base ?
 
 ## Testing
