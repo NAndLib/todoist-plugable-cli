@@ -85,8 +85,6 @@ defined enough right out of the box.
 
 ## Implementation
 
-### Project Structure
-
 ### Core system
 
 ### Plugin Bases
