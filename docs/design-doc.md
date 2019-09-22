@@ -10,18 +10,19 @@ every day tassk from anywhere to chores to work.
 
 ### The API
 
-The Doist team has graciously provided a [Python API](doist/todoist-python) to
-that provides a Python programable way to interact with their [REST
+The Doist team has graciously provided a [Python
+API](https://github.com/doist/todoist-python) to that provides a Python
+programable way to interact with their [REST
 API](https://developer.todoist.com/sync/v8/#summary-of-contents). This will be
 the main library used by this project.
 
 ### Reason and Goal
 
 The current biggest todoist CLI tool available right now is
-[sachaos/todoist](sachaos/todoist). The app provides implemtation for all basic
-Todoist functionality. However, the application is limited to just the given
-functionality and there is no good way to extend its functionality beyond what
-is provided.
+[sachaos/todoist](https://github.com/sachaos/todoist). The app provides
+implemtation for all basic Todoist functionality. However, the application is
+limited to just the given functionality and there is no good way to extend its
+functionality beyond what is provided.
 
 The goal of this project is to to create a commandline interface for Todoist
 that is fully plugable. That is, the application will be built with the idea
