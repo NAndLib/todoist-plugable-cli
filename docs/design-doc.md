@@ -91,7 +91,7 @@ todoist <plugin-base> <command>
 ```
 Where `<plugin-base>` is the name of any available plugin bases and `<command>`
 will be the name of the plugin that the user wants to run. See [plugin
-base](plugin-base) and [plugins](plugins) for more detailed explanations of how
+base](#plugin-base) and [plugins](#plugins) for more detailed explanations of how
 this will work.
 
 ### Core system
