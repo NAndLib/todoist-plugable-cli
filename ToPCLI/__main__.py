@@ -1,3 +1,6 @@
-from ToPCLI.Core import main
+from ToPCLI.PluginLoader import PluginLoader
+import sys
 
-main()
+loader = PluginLoader()
+
+loader.load(sys.argv)
