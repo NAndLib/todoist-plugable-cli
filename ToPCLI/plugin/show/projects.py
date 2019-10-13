@@ -43,6 +43,7 @@ def print_projects(projects, regex, extra_info):
 def run(args):
     projects = todoist.get_state('projects')
 
+    todoist.batch_mode_is(True)
     args = get_args(args)
     extra_info = []
     if args.parent:
@@ -51,3 +52,4 @@ def run(args):
         extra_info += [ 'color' ]
 
     print_projects(projects, args.regex, extra_info)
+    todoist.batch_mode_is(False)
