@@ -127,6 +127,17 @@ class Todoist(object):
     def get_by_id(self, type, id):
         return self._get_cmd(type, 'get_by_id')(id)
 
+    @_reader
+    def api_action_by_id(self, type, action, id):
+        """
+        Perform "action" of "type" with the the given "id"
+        - type: the type of object in Todoist.
+        - action: the action to perform, e.g., get, get_data, etc.
+        - id: the target id.
+        """
+        api_action = self._get_cmd(type, action)
+        return api_action(id)
+
     @_writer
     def add(self, type, content, **kwargs):
         """
@@ -139,7 +150,7 @@ class Todoist(object):
         return self._get_cmd(type, 'add')(content, **kwargs)
 
     @_writer
-    def action_by_id(self, type, action, id, **kwargs):
+    def object_action_by_id(self, type, action, id, **kwargs):
         """
         Perform "action" on the "type" object with "id"
         - type: the type of object in Todoist.
