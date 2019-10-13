@@ -104,6 +104,13 @@ plugin loader.
 The extension will handle authentication with the Todoist server as well as
 exposing parts of the Todoist API so that it will become more scriptable.
 
+The extension aims to combine similar todoist API function calls into the same
+functions. It will also gives the option to remove the necessity of handling
+syncing and committing commands that have been taken, while still allowing batch
+operations to be opted for.
+
+The extension also provides useful data structures for implementors.
+
 #### Plugin Loader
 
 The plugin loader will run everytime any `todoist` command is issued. The loader
