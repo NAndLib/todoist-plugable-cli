@@ -16,8 +16,7 @@ def get_args(args):
 
     return parser.parse_args(args)
 
-def print_projects(projects, regex, extra_info):
-    header = ('id', 'name') + tuple(extra_info)
+def print_projects(projects, regex, header):
     data = [ header ]
     for project in projects:
         if re.match(regex, project['name']):
@@ -48,11 +47,11 @@ def run(args):
     projects = todoist.get_state('projects')
 
     todoist.batch_mode_is(True)
-    extra_info = []
+    header = [ 'id', 'name' ]
     if args.parent:
-        extra_info += [ 'parent_id', 'parent_name' ]
+        header += [ 'parent_id', 'parent_name' ]
     if args.color:
-        extra_info += [ 'color' ]
+        header += [ 'color' ]
 
-    print_projects(projects, args.regex, extra_info)
+    print_projects(projects, args.regex, header)
     todoist.batch_mode_is(False)
