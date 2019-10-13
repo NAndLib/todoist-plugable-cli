@@ -2,7 +2,7 @@ from ToPCLI.Todoist import Todoist, CodeToColors
 import argparse
 import re
 
-todoist = Todoist()
+todoist = None
 
 def get_args(args):
     parser = argparse.ArgumentParser(prog='todoist show projects',
@@ -41,10 +41,13 @@ def print_projects(projects, regex, extra_info):
         print(format_str.format(*item))
 
 def run(args):
+    global todoist
+    args = get_args(args)
+
+    todoist = Todoist()
     projects = todoist.get_state('projects')
 
     todoist.batch_mode_is(True)
-    args = get_args(args)
     extra_info = []
     if args.parent:
         extra_info += [ 'parent_id', 'parent_name' ]
