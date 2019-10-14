@@ -152,4 +152,8 @@ For the plugin base to correctly provide handlers for any plugin listed, a
 plugin must have a `run(args)` function defined, where `args` is a list of of
 arguments that it will get from the plugin base.
 
+### Default Commands
+
+- [`show` commands](https://github.com/NAndLib/todoist-plugable-cli/blob/master/docs/show-commands-design.md).
+
 ## Testing
