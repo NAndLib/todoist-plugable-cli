@@ -64,5 +64,26 @@ Extra functionality:
   - Labels.
   - Due dates.
   - Notes.
+  Similar to the project show command, this option will ignore other options
+  besides the REGEX.
+
+## `show labels`
+
+This command shows all information related to labels. The default `show labels`
+with no arguments will show a list of all labels with their IDs and the number
+tasks that's associated with the label. The labels will be sorted by name.
+
+Extra functionality:
+- Show labels matching REGEX.
+- Show labels with their colors.
+- Show labels with the given ID. This option will show extra information,
+  including:
+  - Color.
+  - Tasks with the given labels, including their IDs, projects, and due dates.
+  This will ignore other options besides the REGEX one.
 
 ## `show filtered`
+
+This command intends to work with the existing Todoist filters as well as
+provide more filtering functionality as well. The default `show filtered` will
+show already existing filters, including their IDs, names, and filter recipe.
