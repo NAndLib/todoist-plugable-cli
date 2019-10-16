@@ -24,8 +24,10 @@ The following options will be available:
     10am”).
   - Due dates with time and fixed timezone (like “1 January 2018 at 12:00
     America/Chicago” or “tomorrow at 10am Asia/Jakarta”).
+
   In addition, any of these due dates can be set to recurring or not, depending
   on the date string, provided by the client.
+
   This option cannot be stacked.
 
 ## `tasks edit`
