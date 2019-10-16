@@ -7,7 +7,7 @@ provided `tasks` base. This will encompass all actions that modify tasks.
 
 Command syntax:
 ```
-todoist tasks create [options] <content>
+todoist tasks create [options] content
 ```
 With no options, the task creation will behave the same way as the default add
 on Todoist, under the "Inbox" project, with no due date or labels.
