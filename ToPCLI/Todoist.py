@@ -48,6 +48,20 @@ ColorsToCode = {
     'TAUPE' : 49,
 }
 
+PRIORITY_TO_LEVEL = {
+    'p1' : 4,
+    'p2' : 3,
+    'p3' : 2,
+    'p4' : 1
+}
+
+LEVEL_TO_PRIORITY = {
+    4 : 'p1',
+    3 : 'p2',
+    2 : 'p3',
+    1 : 'p4'
+}
+
 class Todoist(object):
     def __init__(self, batch_mode=False):
         self.api = todoist.api.TodoistAPI(token)
