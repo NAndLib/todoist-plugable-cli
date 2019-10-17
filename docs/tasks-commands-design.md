@@ -16,6 +16,7 @@ The following options will be available:
 - `--project`: add the task under the given project ID. This option cannot be
   stacked.
 - `--parent`: add the task as a child of the given task ID.
+- `--priority`: set the task's priority. Can be p1 to p4.
 - `--label`: add the task with the given label ID. This option can be stacked.
 - `--date`: use the following due date, from the API documentation date formats
   can be:
