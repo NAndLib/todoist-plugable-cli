@@ -3,7 +3,7 @@ import argparse
 import sys
 
 def get_args(args):
-    parser = argparse.ArgumentParser(prog='tasks create',
+    parser = argparse.ArgumentParser(prog='todoist tasks create',
                                      description='Create a new task.')
     parser.add_argument('content', type=str, metavar='CONTENT',
                         help='The content of the task. Must a single string')
