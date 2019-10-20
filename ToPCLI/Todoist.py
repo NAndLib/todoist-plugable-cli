@@ -137,20 +137,38 @@ class Todoist(object):
         else:
             return self.api.state[item]
 
-    @_reader
-    def get_by_id(self, type, id):
-        return self._get_cmd(type, 'get_by_id')(id)
+    def _action_by_id(self, type, action, id, **kwargs):
+        """
+        Perform the "type" "action" on the given id with the given args.
+        - type: api action types, can be projects, items, labels, quick, etc.
+        - action: the action to perform, can be complete, update, archive,
+          etc.
+        - id: the id of the object.
+        - kwargs: arguments for the action to run.
+        """
+        cmd = self._get_cmd(type, action)
+
+        return cmd(id, **kwargs)
 
     @_reader
-    def api_action_by_id(self, type, action, id):
+    def read_action_by_id(self, type, action, id, **kwargs):
         """
         Perform "action" of "type" with the the given "id"
         - type: the type of object in Todoist.
         - action: the action to perform, e.g., get, get_data, etc.
         - id: the target id.
         """
-        api_action = self._get_cmd(type, action)
-        return api_action(id)
+        return self._action_by_id(type, action, id, **kwargs)
+
+    @_writer
+    def write_action_by_id(self, type, action, id, **kwargs):
+        """
+        Perform "action" of "type" with the the given "id"
+        - type: the type of object in Todoist.
+        - action: the action to perform, e.g., get, get_data, etc.
+        - id: the target id.
+        """
+        return self._action_by_id(type, action, id, **kwargs)
 
     @_writer
     def add(self, type, content, **kwargs):
@@ -162,17 +180,3 @@ class Todoist(object):
         - **kwargs: appropriate keyword args for the type.
         """
         return self._get_cmd(type, 'add')(content, **kwargs)
-
-    @_writer
-    def object_action_by_id(self, type, action, id, **kwargs):
-        """
-        Perform "action" on the "type" object with "id"
-        - type: the type of object in Todoist.
-        - action: the action to perform, e.g., update, complete, archive, etc.
-        - id: the object's id.
-        - **kwargs: the appropriate keyword args for the type and action.
-        """
-        obj = self._get_cmd(type, 'get_by_id')(id)
-        obj_action = getattr(obj, action)
-
-        return obj_action(**kwargs)
