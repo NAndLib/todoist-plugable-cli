@@ -1,4 +1,5 @@
 from config import token
+from contextlib import contextmanager
 import sys
 import todoist
 
@@ -122,6 +123,12 @@ class Todoist(object):
         self.api.sync()
         self.api.commit()
         self._batch_mode = state
+
+    @contextmanager
+    def batch_mode(self):
+        self.batch_mode_is(True)
+        yield
+        self.batch_mode_is(False)
 
     @_reader
     def get_state(self, item=None, *ids):
