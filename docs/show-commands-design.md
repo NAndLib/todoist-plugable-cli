@@ -37,7 +37,7 @@ Extra functionality:
   - Parent.
   - Children.
   - Notes.
-  This option will ignore everything other options besides the REGEX one.
+  This option will ignore every other options.
 
 ## `show tasks`
 

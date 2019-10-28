@@ -11,6 +11,12 @@ class Table(object):
 
     def header_is(self, header):
         self._header = [ str(i) for i in header ]
+    def padding_is(self, col_padding):
+        self._col_padding = col_padding
+    def min_col_width_is(self, min_col_width):
+        self._min_col_width = min_col_width
+    def max_width_is(self, max_width):
+        self._max_width = max_width
 
     def add_row(self, row):
         self._rows.append([ str(i) for i in row ])

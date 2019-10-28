@@ -3,7 +3,7 @@ from contextlib import contextmanager
 import sys
 import todoist
 
-CodeToColors = {
+CODE_TO_COLORS = {
     30 : 'BERRY_RED',
     31 : 'RED',
     32 : 'ORANGE',
@@ -26,7 +26,7 @@ CodeToColors = {
     49 : 'TAUPE',
 }
 
-ColorsToCode = {
+COLORS_TO_CODE = {
     'BERRY_RED' : 30,
     'RED' : 31,
     'ORANGE' : 32,
