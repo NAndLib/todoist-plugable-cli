@@ -15,7 +15,7 @@ class Table(object):
     def add_row(self, row):
         self._rows.append([ str(i) for i in row ])
 
-    def render(self):
+    def render(self, reduce=True):
         output = sys.stdout
         width = []
 
@@ -63,21 +63,23 @@ class Table(object):
         total_width_limit = self._max_width - (columns - 1) * self._col_padding
         width_reduction = total_width - total_width_limit
 
-        reductions = [ reduction_amount(col_width) for col_width in width ]
-        total_reduction = sum(reductions)
-        for i in range(0, columns):
-            if width_reduction <= 0:
-                break
-            reduction = width_reduction * reductions[i]
-            if reduction:
-                reduction = (reduction + total_reduction - 1) / total_reduction
-            if width[i] - reduction < self._min_col_width:
-                reduction = width[i] - self._min_col_width
-                if reduction < 0:
-                    reduction = 0
-            width[i] -= int(reduction)
-            width_reduction -= reduction
-            total_reduction -= reductions[i]
+        if reduce:
+            reductions = [ reduction_amount(col_width) for col_width in width ]
+            total_reduction = sum(reductions)
+            for i in range(0, columns):
+                if width_reduction <= 0:
+                    break
+                reduction = width_reduction * reductions[i]
+                if reduction:
+                    reduction = (reduction +
+                                 total_reduction - 1) / total_reduction
+                if width[i] - reduction < self._min_col_width:
+                    reduction = width[i] - self._min_col_width
+                    if reduction < 0:
+                        reduction = 0
+                width[i] -= int(reduction)
+                width_reduction -= reduction
+                total_reduction -= reductions[i]
 
         col_padding = " " * self._col_padding
 
