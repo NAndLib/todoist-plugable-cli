@@ -65,7 +65,7 @@ LEVEL_TO_PRIORITY = {
 
 class Todoist(object):
     def __init__(self, batch_mode=False):
-        self.api = todoist.api.TodoistAPI(token)
+        self.api = todoist.api.TodoistAPI(token, cache='~/.cache/topcli/')
         self._batch_mode = batch_mode
 
     def _sync(self):
@@ -120,7 +120,8 @@ class Todoist(object):
         """
         Sync and commit changes before toggling batch_mode
         """
-        self.api.sync()
+        if state:
+            self.api.sync()
         self.api.commit()
         self._batch_mode = state
 
