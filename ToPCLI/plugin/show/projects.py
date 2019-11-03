@@ -8,10 +8,10 @@ todoist = None
 def get_args(args):
     parser = argparse.ArgumentParser(prog='todoist show projects',
                                      description='Show available projects.')
-    parser.add_argument('id', nargs='?', metavar='ID', type=int,
-                        help='Show details of the project with the given ID')
-    parser.add_argument('--regex', '-r', type=str,
+    parser.add_argument('regex', nargs='?', type=str,
                         help='Only show projects matching "regex".')
+    parser.add_argument('--id', '-i', metavar='ID', type=int,
+                        help='Show details of the project with the given ID')
     parser.add_argument('--parent', '-p', action='store_true',
                         help='Show ID and name of parent project.')
     parser.add_argument('--color', '-C', action='store_true',
@@ -113,7 +113,6 @@ def run(args):
         if args.id:
             build_table_from_id(args.id, table)
         else:
-            table.padding_is(5)
             build_table_from_args(args, table)
 
         table.render()
