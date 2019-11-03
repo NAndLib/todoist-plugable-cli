@@ -8,6 +8,14 @@ class Table(object):
         self._col_padding = col_padding
         self._min_col_width = min_col_width
         self._max_width = max_width
+        self._no_reduce = []
+
+    def _find_columns_by_name(self, column_names):
+        if type(column_names) is not list:
+            column_names = [ column_names ]
+        for name in column_names:
+            if name in self._header:
+                yield self._header.index(name)
 
     def header_is(self, header):
         self._header = [ str(i) for i in header ]
@@ -17,11 +25,18 @@ class Table(object):
         self._min_col_width = min_col_width
     def max_width_is(self, max_width):
         self._max_width = max_width
+    def no_reduce(self, column_names):
+        self._no_reduce = list(self._find_columns_by_name(column_names))
 
     def add_row(self, row):
         self._rows.append([ str(i) for i in row ])
 
-    def render(self, reduce=True):
+    def sort(self, column_names):
+        return sorted(self._rows,
+            key=lambda row: tuple([row[i] for i in
+                                   self._find_columns_by_name(column_names)]))
+
+    def render(self):
         output = sys.stdout
         width = []
 
@@ -69,23 +84,24 @@ class Table(object):
         total_width_limit = self._max_width - (columns - 1) * self._col_padding
         width_reduction = total_width - total_width_limit
 
-        if reduce:
-            reductions = [ reduction_amount(col_width) for col_width in width ]
-            total_reduction = sum(reductions)
-            for i in range(0, columns):
-                if width_reduction <= 0:
-                    break
-                reduction = width_reduction * reductions[i]
-                if reduction:
-                    reduction = (reduction +
-                                 total_reduction - 1) / total_reduction
-                if width[i] - reduction < self._min_col_width:
-                    reduction = width[i] - self._min_col_width
-                    if reduction < 0:
-                        reduction = 0
-                width[i] -= int(reduction)
-                width_reduction -= reduction
-                total_reduction -= reductions[i]
+        reductions = [ reduction_amount(col_width) for col_width in width ]
+        total_reduction = sum(reductions)
+        for i in range(0, columns):
+            if i in self._no_reduce:
+                continue
+            if width_reduction <= 0:
+                break
+            reduction = width_reduction * reductions[i]
+            if reduction:
+                reduction = (reduction +
+                             total_reduction - 1) / total_reduction
+            if width[i] - reduction < self._min_col_width:
+                reduction = width[i] - self._min_col_width
+                if reduction < 0:
+                    reduction = 0
+            width[i] -= int(reduction)
+            width_reduction -= reduction
+            total_reduction -= reductions[i]
 
         col_padding = " " * self._col_padding
 
