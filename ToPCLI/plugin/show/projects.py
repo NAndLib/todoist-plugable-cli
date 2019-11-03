@@ -16,8 +16,12 @@ def get_args(args):
                         help='Show ID and name of parent project.')
     parser.add_argument('--color', '-C', action='store_true',
                         help='Show color of project.')
-    parser.add_argument('--summary', '-s', action='store_true',
+
+    verboseness_options = parser.add_mutually_exclusive_group()
+    verboseness_options.add_argument('--summary', '-s', action='store_true',
                         help='Show item counts.')
+    verboseness_options.add_argument('--detail', '-d', action='store_true',
+                        help='Show all information for every project.')
 
     return parser.parse_args(args)
 
@@ -29,18 +33,7 @@ def get_parent_project(todoist, project):
                                            'get', parent_id)['project']
     return parent
 
-def build_table_from_id(id, table):
-    project_data = todoist.read_action_by_id('projects',
-                                             'get_data', id)
-    project = project_data['project']
-    items = project_data['items']
-
-    table.header_is(["{}:".format(project['name'])])
-    parent = get_parent_project(todoist, project)
-    if parent is not None:
-        table.add_row(['Parent:', parent['name'], parent['id']])
-
-    table.add_row(['Color:', CODE_TO_COLORS[project['color']]])
+def build_project_items_table(table, items):
     table.add_row(['Items:'])
     items_header = ['ID', 'Priority', 'Due Date', 'Labels', 'Content']
     table.add_row(items_header)
@@ -64,6 +57,20 @@ def build_table_from_id(id, table):
         item_row.append(item['content'])
 
         table.add_row(item_row)
+
+def build_table_from_id(id, table):
+    project_data = todoist.read_action_by_id('projects',
+                                             'get_data', id)
+    project = project_data['project']
+    items = project_data['items']
+
+    table.header_is(["{}:".format(project['name'])])
+    parent = get_parent_project(todoist, project)
+    if parent is not None:
+        table.add_row(['Parent:', parent['name'], parent['id']])
+
+    table.add_row(['Color:', CODE_TO_COLORS[project['color']]])
+    build_project_items_table(table, items)
 
 def build_table_from_args(args, table):
     projects_state = todoist.get_state('projects')
@@ -101,6 +108,11 @@ def build_table_from_args(args, table):
             project_row.append(len(items))
 
         table.add_row(project_row)
+
+        if args.detail:
+            items = todoist.read_action_by_id(
+                'projects', 'get_data', project['id'])['items']
+            build_project_items_table(table, items)
 
 def run(args):
     global todoist
