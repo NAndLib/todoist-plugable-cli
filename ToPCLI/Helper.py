@@ -1,13 +1,13 @@
 import sys
 import textwrap
+import subprocess
 
 class Table(object):
-    def __init__(self, col_padding=2, min_col_width=12, max_width=85):
+    def __init__(self, col_padding=2, min_col_width=12):
         self._header = None
         self._rows = []
         self._col_padding = col_padding
         self._min_col_width = min_col_width
-        self._max_width = max_width
         self._no_reduce = []
 
     def _find_columns_by_name(self, column_names):
@@ -23,8 +23,6 @@ class Table(object):
         self._col_padding = col_padding
     def min_col_width_is(self, min_col_width):
         self._min_col_width = min_col_width
-    def max_width_is(self, max_width):
-        self._max_width = max_width
     def no_reduce(self, column_names):
         self._no_reduce = list(self._find_columns_by_name(column_names))
 
@@ -37,6 +35,8 @@ class Table(object):
                                    self._find_columns_by_name(column_names)]))
 
     def render(self):
+        self._max_width = \
+            int(subprocess.check_output(['stty', 'size']).decode().split()[1])
         output = sys.stdout
         width = []
 

@@ -69,7 +69,6 @@ def build_table_from_args(table, args):
 
         table.add_row(item_row)
 
-    table.no_reduce('Content')
     table.sort('Priority')
 
 def run(args):
