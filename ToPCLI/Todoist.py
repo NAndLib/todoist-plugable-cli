@@ -108,7 +108,7 @@ class Todoist(object):
         Sync and commit changes before toggling batch_mode
         """
         if not state:
-            self.api.sync()
+            self.api.commit()
         self._batch_mode = state
 
     @contextmanager

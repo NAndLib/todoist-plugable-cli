@@ -31,8 +31,8 @@ def run(args):
     for id in args.ids:
         if type(action) == list:
             for act in action:
-                todoist.write_action_by_id('items', act, id)
+                todoist.do('items', act, id)
         else:
-            todoist.write_action_by_id('items', action, id)
+            todoist.do('items', action, id)
 
     todoist.batch_mode_is(False)
