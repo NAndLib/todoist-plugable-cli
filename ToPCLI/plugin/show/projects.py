@@ -29,8 +29,7 @@ def get_parent_project(todoist, project):
     parent = None
     if project['parent_id'] is not None:
         parent_id = project['parent_id']
-        parent = todoist.read_action_by_id('projects',
-                                           'get', parent_id)['project']
+        parent = todoist.get('projects', parent_id)
     return parent
 
 def build_project_items_table(table, items):
@@ -50,8 +49,7 @@ def build_project_items_table(table, items):
 
         labels = []
         for label_id in item['labels']:
-            label = todoist.read_action_by_id('labels',
-                                              'get_by_id', label_id)
+            label = todoist.get('labels', label_id)
             labels.append(label['name'])
         item_row.append(', '.join(labels))
         item_row.append(item['content'])
@@ -59,7 +57,7 @@ def build_project_items_table(table, items):
         table.add_row(item_row)
 
 def build_table_from_id(id, table):
-    project_data = todoist.read_action_by_id('projects',
+    project_data = todoist.do('projects',
                                              'get_data', id)
     project = project_data['project']
     items = project_data['items']
@@ -103,15 +101,13 @@ def build_table_from_args(args, table):
         if args.color:
             project_row.append(CODE_TO_COLORS[project['color']])
         if args.summary:
-            items = todoist.read_action_by_id(
-                'projects', 'get_data', project['id'])['items']
+            items = todoist.do('projects', 'get_data', project['id'])['items']
             project_row.append(len(items))
 
         table.add_row(project_row)
 
         if args.detail:
-            items = todoist.read_action_by_id(
-                'projects', 'get_data', project['id'])['items']
+            items = todoist.do( 'projects', 'get_data', project['id'])['items']
             build_project_items_table(table, items)
 
 def run(args):
