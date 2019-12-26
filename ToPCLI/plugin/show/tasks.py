@@ -6,7 +6,7 @@ import re
 todoist = None
 
 def get_args(args):
-    parser = argparse.ArgumentParser(prog='show tasks',
+    parser = argparse.ArgumentParser(prog='todoist show tasks',
                                      description='Show available tasks.')
     parser.add_argument('regex', nargs='?', default='.*',
                         help='Only show tasks matching "regex".')
@@ -28,12 +28,12 @@ def build_table_from_args(table, args):
     def project_name(id):
         if not id:
             return None
-        project = todoist.read_action_by_id('projects', 'get', id)['project']
+        project = todoist.get('projects', id)
         return project['name']
     def label_name(id):
         if not id:
             return None
-        label = todoist.read_action_by_id('labels', 'get', id)['label']
+        label = todoist.get('labels', id)
         return label['name']
 
     filters = [ lambda item: not item['content'].endswith(':')  ]

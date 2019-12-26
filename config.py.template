@@ -1,1 +1,2 @@
 token = '<token>'
+cache_dir = '~/.cache/topcli/'

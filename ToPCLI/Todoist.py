@@ -1,4 +1,4 @@
-from config import token
+from config import token, cache_dir
 from contextlib import contextmanager
 import sys
 import todoist
@@ -65,10 +65,11 @@ LEVEL_TO_PRIORITY = {
 
 class Todoist(object):
     def __init__(self, batch_mode=False):
-        self.api = todoist.api.TodoistAPI(token, cache='~/.cache/topcli/')
+        self.api = todoist.api.TodoistAPI(token, cache=cache_dir)
         self._batch_mode = batch_mode
+        self.sync()
 
-    def _sync(self):
+    def sync(self):
         """
         Only sync if batch_mode is False.
         """
@@ -76,7 +77,7 @@ class Todoist(object):
             return
         self.api.sync()
 
-    def _commit(self):
+    def commit(self):
         """
         Only commit if batch_mode is False.
         """
@@ -84,9 +85,8 @@ class Todoist(object):
             return
         self.api.commit()
 
-    def _reader(func):
-        def sync_run(self, *args, **kwargs):
-            self._sync()
+    def _api_func(func):
+        def run_func(self, *args, **kwargs):
             try:
                 result = func(self, *args, **kwargs)
             except Exception as e:
@@ -94,20 +94,7 @@ class Todoist(object):
                 print(e)
                 sys.exit(1)
             return result
-        return sync_run
-
-    def _writer(func):
-        def sync_run_commit(self, *args, **kwargs):
-            self._sync()
-            try:
-                result = func(self, *args, **kwargs)
-            except Exception as e:
-                print("Failed to run command.", file=sys.stderr)
-                print(e)
-                sys.exit(2)
-            self._commit()
-            return result
-        return sync_run_commit
+        return run_func
 
     def _get_cmd(self, type, command):
         """
@@ -120,9 +107,8 @@ class Todoist(object):
         """
         Sync and commit changes before toggling batch_mode
         """
-        if state:
+        if not state:
             self.api.sync()
-        self.api.commit()
         self._batch_mode = state
 
     @contextmanager
@@ -131,7 +117,7 @@ class Todoist(object):
         yield
         self.batch_mode_is(False)
 
-    @_reader
+    @_api_func
     def get_state(self, item=None, *ids):
         """
         Returns a dictionary of the current state, keyed by ID.
@@ -145,7 +131,19 @@ class Todoist(object):
         else:
             return self.api.state[item]
 
-    def _action_by_id(self, type, action, id, **kwargs):
+    @_api_func
+    def get(self, type, id):
+        """
+        Gets "type" by id, returns None if type is not found.
+
+        Only searches the local state if in batch mode
+        """
+        get_by_id = self._get_cmd(type, 'get_by_id')
+
+        return get_by_id(id, only_local=(self._batch_mode))
+
+    @_api_func
+    def do(self, type, action, id, **kwargs):
         """
         Perform the "type" "action" on the given id with the given args.
         - type: api action types, can be projects, items, labels, quick, etc.
@@ -158,27 +156,7 @@ class Todoist(object):
 
         return cmd(id, **kwargs)
 
-    @_reader
-    def read_action_by_id(self, type, action, id, **kwargs):
-        """
-        Perform "action" of "type" with the the given "id"
-        - type: the type of object in Todoist.
-        - action: the action to perform, e.g., get, get_data, etc.
-        - id: the target id.
-        """
-        return self._action_by_id(type, action, id, **kwargs)
-
-    @_writer
-    def write_action_by_id(self, type, action, id, **kwargs):
-        """
-        Perform "action" of "type" with the the given "id"
-        - type: the type of object in Todoist.
-        - action: the action to perform, e.g., get, get_data, etc.
-        - id: the target id.
-        """
-        return self._action_by_id(type, action, id, **kwargs)
-
-    @_writer
+    @_api_func
     def add(self, type, content, **kwargs):
         """
         Add/Create a "type" object with "content".
