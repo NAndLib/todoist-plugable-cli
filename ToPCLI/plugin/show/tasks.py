@@ -46,7 +46,7 @@ def build_table_from_args(table, args):
         def match_labels(item):
             for label_id in item['labels']:
                 yield re.match(args.labelRE, label_name(label_id))
-        filters += [ lambda item: any(match_labels[item]) ]
+        filters += [ lambda item: any(match_labels(item)) ]
 
     table.header_is(['ID', 'Project (ID)', 'Labels (ID)',
                      'Due Date', 'Priority', 'Content'])
